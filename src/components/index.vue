@@ -11,11 +11,11 @@
               @input="getData"
               expanded
             >
-              <option value="Covid19 by country">Covid19 by country</option>
+              <option value="covid19-country">Covid19 by country</option>
             </b-select>
           </b-field>
 
-          <b-field label="Country">
+          <b-field label="Country" v-if="select.dataset === 'covid19-country'">
             <b-select
               placeholder="Select a country"
               v-model="select.country"
@@ -49,7 +49,7 @@
             </b-select>
           </b-field-->
 
-          <b-field label="Select a date range">
+          <b-field label="Select a date range" v-if="select.dataset === 'covid19-country'">
             <b-datepicker
               placeholder="Click to select..."
               v-model="select.dates"
@@ -117,7 +117,7 @@ export default {
 
   methods: {
     loadAffectedCountry() {
-      const url = "http://api.coronatracker.com/v2/analytics/country";
+      const url = "https://api.coronatracker.com/v2/analytics/country";
       this.$http.get(url).then(res => {
         const mappedInfo = res.data
           .map(m => {
@@ -140,7 +140,7 @@ export default {
 
     getCountryTrend() {
       const url =
-        "http://api.coronatracker.com/v3/analytics/trend/country?" +
+        "https://api.coronatracker.com/v3/analytics/trend/country?" +
         "countryCode=" +
         this.select.country +
         "&startDate=" +
@@ -161,7 +161,6 @@ export default {
     },
 
     getData() {
-      console.log(this.select.dates);
       if (this.select.dataset && this.select.country && this.select.dates) {
         this.getCountryTrend();
       }
